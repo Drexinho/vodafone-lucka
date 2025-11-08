@@ -4,7 +4,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            const navHeight = 70; // Výška navigační lišty
+            const navHeight = 85; // Výška navigační lišty
             const targetPosition = target.offsetTop - navHeight;
             
             window.scrollTo({
