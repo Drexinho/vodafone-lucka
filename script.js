@@ -64,43 +64,41 @@ window.addEventListener('scroll', () => {
 
 // Kontaktní formulář
 const form = document.getElementById('form');
-if (form) {
-    const submitBtn = form.querySelector('button[type="submit"]');
+const submitBtn = form.querySelector('button[type="submit"]');
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(form);
-        formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05");
+    const formData = new FormData(form);
+    formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05".trim());
 
-        const originalText = submitBtn.textContent;
+    const originalText = submitBtn.textContent;
 
-        submitBtn.textContent = "Sending...";
-        submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
 
-        try {
-            const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
-                body: formData
-            });
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (response.ok) {
-                alert("Success! Your message has been sent.");
-                form.reset();
-            } else {
-                alert("Error: " + data.message);
-            }
-
-        } catch (error) {
-            alert("Something went wrong. Please try again.");
-        } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+        if (data.success) {
+            alert("Success! Your message has been sent.");
+            form.reset();
+        } else {
+            alert("Error: " + (data.message || "Something went wrong."));
         }
-    });
-}
+
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
 
 // Čítače statistik odstraněny
 
