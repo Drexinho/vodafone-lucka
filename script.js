@@ -64,41 +64,56 @@ window.addEventListener('scroll', () => {
 
 // Kontaktní formulář
 const form = document.getElementById('form');
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05".trim());
-
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = "Sending...";
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            alert("Success! Your message has been sent.");
-            form.reset();
-        } else {
-            alert("Error: " + (data.message || "Something went wrong."));
+if (form) {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Získání dat z formuláře
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Základní validace
+        if (!data.name || !data.email || !data.message) {
+            alert('Prosím vyplňte všechna povinná pole.');
+            return;
         }
+        
+        if (!data.consent) {
+            alert('Prosím souhlaste se zpracováním osobních údajů.');
+            return;
+        }
+        
+        // Přidání access_key pro web3forms
+        formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05");
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'Odesílám...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
 
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-});
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Děkujeme za vaši zprávu! Brzy vás budeme kontaktovat.');
+                this.reset();
+            } else {
+                alert('Chyba: ' + (result.message || 'Něco se pokazilo. Zkuste to prosím znovu.'));
+            }
+        } catch (error) {
+            alert('Něco se pokazilo. Zkuste to prosím znovu.');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
 
 // Čítače statistik odstraněny
 
