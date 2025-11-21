@@ -70,21 +70,26 @@ if (form) {
         
         // Získání dat z formuláře
         const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
         
         // Základní validace
-        if (!data.name || !data.email || !data.message) {
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+        const consent = formData.get('consent');
+        
+        if (!name || !email || !message) {
             alert('Prosím vyplňte všechna povinná pole.');
             return;
         }
         
-        if (!data.consent) {
+        if (!consent) {
             alert('Prosím souhlaste se zpracováním osobních údajů.');
             return;
         }
         
-        // Přidání access_key pro web3forms
-        formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05");
+        // Přidání access_key pro web3forms (přidáno jako čistý string bez mezer)
+        const accessKey = "7d51336d-dc07-48a8-aca6-e58a2c37ca05";
+        formData.set("access_key", accessKey);
         
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
