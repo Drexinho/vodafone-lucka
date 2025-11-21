@@ -19,20 +19,6 @@
 }
 
 body {
-
-/* Force no underline for nav-logo */
-a.nav-logo,
-a.nav-logo:link,
-a.nav-logo:visited,
-a.nav-logo:hover,
-a.nav-logo:active,
-a.nav-logo:focus {
-    text-decoration: none !important;
-    text-decoration-line: none !important;
-    border-bottom: none !important;
-    border: none !important;
-}
-
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
     color: var(--dark-gray);
@@ -70,36 +56,6 @@ a.nav-logo:focus {
 .nav-logo {
     display: flex;
     flex-direction: column;
-    text-decoration: none !important;
-    text-decoration-line: none !important;
-    text-decoration-style: none !important;
-    text-decoration-color: transparent !important;
-    color: inherit;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
-    border-bottom: none !important;
-}
-
-.nav-logo:hover,
-.nav-logo:active,
-.nav-logo:visited,
-.nav-logo:focus {
-    text-decoration: none !important;
-}
-
-.nav-logo:hover {
-    opacity: 0.8;
-}
-
-.nav-logo span,
-.nav-logo span:hover,
-.nav-logo span:active {
-    text-decoration: none !important;
-    border-bottom: none !important;
-}
-
-.nav-logo:active {
-    opacity: 0.6;
 }
 
 .logo-text {
@@ -123,7 +79,7 @@ a.nav-logo:focus {
 }
 
 .nav-link {
-    text-decoration: none !important;
+    text-decoration: none;
     color: var(--dark-gray);
     font-weight: 500;
     font-size: 1.1rem;
@@ -215,7 +171,7 @@ a.nav-logo:focus {
     display: inline-block;
     padding: 20px 40px;
     border-radius: 50px;
-    text-decoration: none !important;
+    text-decoration: none;
     font-weight: 600;
     font-size: 1.2rem;
     transition: all 0.3s ease;
@@ -366,7 +322,7 @@ a.nav-logo:focus {
     gap: 8px;
     padding: 12px 20px;
     border-radius: 50px;
-    text-decoration: none !important;
+    text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
 }
@@ -562,7 +518,7 @@ a.nav-logo:focus {
 
 .contact-details a {
     color: var(--primary-red);
-    text-decoration: none !important;
+    text-decoration: none;
     font-weight: 500;
     word-break: break-all;
 }
@@ -589,7 +545,7 @@ a.nav-logo:focus {
     gap: 8px;
     padding: 12px 20px;
     border-radius: 50px;
-    text-decoration: none !important;
+    text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
     flex: 1;
@@ -711,7 +667,7 @@ a.nav-logo:focus {
     align-items: center;
     justify-content: center;
     color: var(--white);
-    text-decoration: none !important;
+    text-decoration: none;
     transition: all 0.3s ease;
 }
 
@@ -738,7 +694,7 @@ a.nav-logo:focus {
 
 .footer-links a {
     color: #adb5bd;
-    text-decoration: none !important;
+    text-decoration: none;
     transition: color 0.3s ease;
 }
 
@@ -826,52 +782,16 @@ a.nav-logo:focus {
 
 /* Mobile Tablets and Large Phones (576px - 768px) */
 @media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-    
     .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
-        padding: 1rem 20px;
-        height: 85px;
+        padding: 1rem 0;
+        height: auto;
+        min-height: 85px;
     }
     
     .nav-logo {
-        margin-bottom: 0;
-        flex: 0 0 auto;
-    }
-    
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 85px;
-        left: 0;
-        width: 100%;
-        background: var(--white);
-        box-shadow: var(--shadow-lg);
-        flex-direction: column;
-        padding: 1rem 0;
-        z-index: 999;
-    }
-    
-    .nav-menu.active {
-        display: flex;
-    }
-    
-    .nav-menu li {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .nav-menu .nav-link {
-        display: block;
-        padding: 1rem 2rem;
-        width: 100%;
-        border-radius: 0;
-        background-color: transparent;
-        min-width: auto;
+        margin-bottom: 0.5rem;
     }
     
     .logo-text {
@@ -879,7 +799,22 @@ a.nav-logo:focus {
     }
     
     .logo-subtitle {
-        display: none;
+        font-size: 0.85rem;
+    }
+    
+    .nav-menu {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .nav-link {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.75rem;
     }
     
     .hero {
@@ -925,10 +860,6 @@ a.nav-logo:focus {
     .about-stats {
         flex-direction: row;
         justify-content: space-around;
-    }
-    
-    .social-links {
-        justify-content: center;
     }
     
     .stat-item {

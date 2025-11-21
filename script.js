@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 // Smooth scrolling pro navigační odkazy
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -20,10 +21,31 @@ const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
 if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
+    hamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
+    
+    // Zavřít menu při kliknutí na odkaz
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
+    });
+    
+    // Zavřít menu při kliknutí mimo
+    document.addEventListener('click', function(e) {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+    });
+} else {
+    console.warn('Hamburger menu elements not found');
 }
 
 // Změna navbar při scrollování
@@ -41,48 +63,49 @@ window.addEventListener('scroll', () => {
 // Animace při scrollování odstraněny
 
 // Kontaktní formulář
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Získání dat z formuláře
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        
-        // Základní validace
-        if (!data.name || !data.email || !data.message) {
-            alert('Prosím vyplňte všechna povinná pole.');
-            return;
+const form = document.getElementById('form');
+const submitBtn = form.querySelector('button[type="submit"]');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    formData.append("access_key", "7d51336d-dc07-48a8-aca6-e58a2c37ca05");
+
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("Success! Your message has been sent.");
+            form.reset();
+        } else {
+            alert("Error: " + data.message);
         }
-        
-        if (!data.consent) {
-            alert('Prosím souhlaste se zpracováním osobních údajů.');
-            return;
-        }
-        
-        // Simulace odeslání (v reálné aplikaci by se zde odeslal AJAX požadavek)
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Odesílám...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            alert('Děkujeme za vaši zprávu! Brzy vás budeme kontaktovat.');
-            this.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
-    });
-}
+
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
 
 // Čítače statistik odstraněny
 
 // Parallax efekt odstraněn - způsoboval problémy s pozicováním
 
-// Tooltip pro sociální sítě
-document.querySelectorAll('.social-link').forEach(link => {
+// Tooltip pro sociální sítě - pouze pro odkazy pod "Váš partner pro úspěch"
+document.querySelectorAll('.about-text .social-links .social-link').forEach(link => {
     link.addEventListener('mouseenter', function() {
         const tooltip = document.createElement('div');
         tooltip.className = 'tooltip';
@@ -135,3 +158,5 @@ document.querySelectorAll('img[data-src]').forEach(img => {
 // Konzole log pro vývojáře
 console.log('%c🚀 Lucie Kašíková - Vodafone Business Partner', 'color: #e60012; font-size: 20px; font-weight: bold;');
 console.log('%cWebová stránka byla vytvořena s láskou pro profesionální prezentaci.', 'color: #666; font-size: 14px;');
+
+});
